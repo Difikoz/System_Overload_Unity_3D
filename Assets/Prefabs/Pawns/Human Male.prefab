@@ -693,7 +693,7 @@ MonoBehaviour:
   _footLeftPoint: {fileID: 2784785601501273516}
   _height: 1.8
   _radius: 0.3
-  _maxTurnAngle: 45
+  _maxTurnAngle: 90
 --- !u!114 &1072156006100939763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -835,7 +835,8 @@ MonoBehaviour:
   Stats: []
   HealthCurrent: 0
   EnergyCurrent: 0
-  _regenerationTickDelay: 1
+  _healthRegenerationTick: 0.5
+  _energyRegenerationTick: 0.25
   _healthRegenerationDelay: 10
   _energyRegenerationDelay: 5
 --- !u!95 &5103900588920211198
@@ -906,7 +907,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.8
-  m_Radius: 0.3
+  m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08

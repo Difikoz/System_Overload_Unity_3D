@@ -16,7 +16,7 @@ namespace WinterUniverse
         {
             PawnSaveData data = new()
             {
-                CharacterName = CharacterName,
+                PawnName = CharacterName,
                 Faction = Faction.DisplayName,
                 Weapon = Weapon.DisplayName,
                 Armor = Armor.DisplayName,

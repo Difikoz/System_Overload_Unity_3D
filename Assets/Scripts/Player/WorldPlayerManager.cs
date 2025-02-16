@@ -65,7 +65,7 @@ namespace WinterUniverse
 
         public void SaveData(ref PawnSaveData data)
         {
-            data.CharacterName = _pawn.CharacterName;
+            data.PawnName = _pawn.CharacterName;
             data.Faction = _pawn.Faction.DisplayName;
             data.Health = _pawn.PawnStats.HealthCurrent;
             data.Energy = _pawn.PawnStats.EnergyCurrent;

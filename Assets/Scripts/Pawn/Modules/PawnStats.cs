@@ -64,14 +64,15 @@ namespace WinterUniverse
         [HideInInspector] public Stat ViewAngle;
         #endregion
 
-        [SerializeField] private float _regenerationTickDelay = 1f;
+        [SerializeField] private float _healthRegenerationTick = 0.5f;
+        [SerializeField] private float _energyRegenerationTick = 0.25f;
         [SerializeField] private float _healthRegenerationDelay = 10f;
         [SerializeField] private float _energyRegenerationDelay = 5f;
 
-        private float _healthRegenerationTimer;
-        private float _healthTickTimer;
-        private float _energyRegenerationTimer;
-        private float _energyTickTimer;
+        private float _healthRegenerationDelayTimer;
+        private float _healthRegenerationTickTimer;
+        private float _energyRegenerationDelayTimer;
+        private float _energyRegenerationTickTimer;
 
         public float HealthPercent => HealthCurrent / HealthMax.CurrentValue;
 
@@ -96,7 +97,7 @@ namespace WinterUniverse
                 value *= DamageTaken.CurrentValue / 100f;
                 HealthCurrent = Mathf.Clamp(HealthCurrent - value, 0f, HealthMax.CurrentValue);
                 OnHealthChanged?.Invoke(HealthCurrent, HealthMax.CurrentValue);
-                _healthRegenerationTimer = 0f;
+                _healthRegenerationDelayTimer = 0f;
                 if (HealthCurrent <= 0f)
                 {
                     _pawn.Die(source);
@@ -128,7 +129,7 @@ namespace WinterUniverse
             }
             EnergyCurrent = Mathf.Clamp(EnergyCurrent - value, 0f, EnergyMax.CurrentValue);
             OnEnergyChanged?.Invoke(EnergyCurrent, EnergyMax.CurrentValue);
-            _energyRegenerationTimer = 0f;
+            _energyRegenerationDelayTimer = 0f;
         }
 
         public void RestoreCurrentEnergy(float value)
@@ -326,21 +327,21 @@ namespace WinterUniverse
 
         private void RegenerateHealth()
         {
-            if (_healthRegenerationTimer >= _healthRegenerationDelay)
+            if (_healthRegenerationDelayTimer >= _healthRegenerationDelay)
             {
                 if (HealthCurrent < HealthMax.CurrentValue)
                 {
-                    _healthTickTimer += Time.deltaTime;
-                    if (_healthTickTimer >= _regenerationTickDelay)
+                    _healthRegenerationTickTimer += Time.deltaTime;
+                    if (_healthRegenerationTickTimer >= _healthRegenerationTick)
                     {
-                        _healthTickTimer = 0f;
+                        _healthRegenerationTickTimer = 0f;
                         RestoreCurrentHealth(HealthRegeneration.CurrentValue);
                     }
                 }
             }
             else
             {
-                _healthRegenerationTimer += Time.deltaTime;
+                _healthRegenerationDelayTimer += Time.deltaTime;
             }
         }
 
@@ -350,21 +351,21 @@ namespace WinterUniverse
             {
                 return;
             }
-            if (_energyRegenerationTimer >= _energyRegenerationDelay)
+            if (_energyRegenerationDelayTimer >= _energyRegenerationDelay)
             {
                 if (EnergyCurrent < EnergyMax.CurrentValue)
                 {
-                    _energyTickTimer += Time.deltaTime;
-                    if (_energyTickTimer >= _regenerationTickDelay)
+                    _energyRegenerationTickTimer += Time.deltaTime;
+                    if (_energyRegenerationTickTimer >= _energyRegenerationTick)
                     {
-                        _energyTickTimer = 0f;
+                        _energyRegenerationTickTimer = 0f;
                         RestoreCurrentEnergy(EnergyRegeneration.CurrentValue);
                     }
                 }
             }
             else
             {
-                _energyRegenerationTimer += Time.deltaTime;
+                _energyRegenerationDelayTimer += Time.deltaTime;
             }
         }
     }

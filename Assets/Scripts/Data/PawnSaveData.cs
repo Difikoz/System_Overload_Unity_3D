@@ -3,7 +3,7 @@ namespace WinterUniverse
     [System.Serializable]
     public class PawnSaveData
     {
-        public string CharacterName = "Loner";
+        public string PawnName = "Loner";
 
         public string Faction = "Tramps";
 

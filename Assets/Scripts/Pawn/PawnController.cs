@@ -21,7 +21,7 @@ namespace WinterUniverse
         public Action OnDied;
         public Action OnRevived;
 
-        protected string _characterName;
+        protected string _pawnName;
         protected FactionConfig _faction;
         protected PawnAnimator _pawnAnimator;
         protected PawnCombat _pawnCombat;
@@ -33,7 +33,7 @@ namespace WinterUniverse
         protected PawnSound _pawnSound;
         protected PawnStats _pawnStats;
 
-        public string CharacterName => _characterName;
+        public string CharacterName => _pawnName;
         public FactionConfig Faction => _faction;
         public PawnAnimator PawnAnimator => _pawnAnimator;
         public PawnCombat PawnCombat => _pawnCombat;
@@ -119,9 +119,8 @@ namespace WinterUniverse
         public void CreateCharacter(PawnSaveData data)
         {
             Created = false;
-            _characterName = data.CharacterName;
+            _pawnName = data.PawnName;
             _pawnInventory.Initialize(data.InventoryStacks);
-            IgnoreMyOwnColliders();// this order??? or on end???
             _pawnEquipment.EquipWeapon(GameManager.StaticInstance.ConfigsManager.GetWeapon(data.Weapon), false, false);
             _pawnEquipment.EquipArmor(GameManager.StaticInstance.ConfigsManager.GetArmor(data.Armor), false, false);
             //_pawnEquipment.EquipBestItems();
@@ -129,6 +128,7 @@ namespace WinterUniverse
             _pawnStats.RestoreCurrentHealth(_pawnStats.HealthMax.CurrentValue);
             _pawnStats.RestoreCurrentEnergy(_pawnStats.EnergyMax.CurrentValue);
             ChangeFaction(GameManager.StaticInstance.ConfigsManager.GetFaction(data.Faction));
+            IgnoreMyOwnColliders();// this order???
             Created = true;
         }
 
