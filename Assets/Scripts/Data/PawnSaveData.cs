@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace WinterUniverse
 {
     [System.Serializable]
@@ -15,7 +17,8 @@ namespace WinterUniverse
 
         public SerializableDictionary<string, int> InventoryStacks = new();
 
-        public string Weapon;
-        public string Armor;
+        public string WeaponInRightHand;
+        public string WeaponInLeftHand;
+        public List<string> Armors = new();
     }
 }

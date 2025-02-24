@@ -52,7 +52,7 @@ namespace WinterUniverse
         public float RightVelocity;
         public float FallVelocity;
         public float TurnVelocity;
-        public bool IsPerfomingAction;
+        public bool IsPerfomingAnimationAction;
         public bool UseGravity = true;
         public bool CanMove = true;
         public bool CanRotate = true;
@@ -61,8 +61,8 @@ namespace WinterUniverse
         public bool IsRunning;
         public bool IsJumping;
         public bool IsInteracting;
-        public bool IsFiring;
-        public bool IsAiming;
+        public bool IsRightHandAttacking;
+        public bool IsLeftHandAttacking;
         public bool IsInvulnerable;
         public bool IsDead;
 
@@ -94,9 +94,9 @@ namespace WinterUniverse
             {
                 return;
             }
+            _pawnEffects.TickEffects(Time.deltaTime);
             if (!IsDead)
             {
-                _pawnEffects.TickEffects(Time.deltaTime);
                 _pawnStats.OnUpdate();
                 _pawnCombat.OnUpdate();
                 if (IsJumping)
@@ -107,29 +107,46 @@ namespace WinterUniverse
                 {
                     _pawnInteraction.AttempToInteract();
                 }
-                else if (IsFiring)
+                else if (IsRightHandAttacking)
                 {
-                    _pawnEquipment.WeaponSlot.Fire();
+                    _pawnEquipment.WeaponSlotRight.PerformAction();
+                }
+                else if (IsRightHandAttacking)
+                {
+                    _pawnEquipment.WeaponSlotRight.PerformAction();
                 }
             }
             _pawnAnimator.OnUpdate();
             _pawnLocomotion.OnUpdate();
         }
 
-        public void CreateCharacter(PawnSaveData data)
+        public void CreatePawn(PawnSaveData data)
         {
             Created = false;
             _pawnName = data.PawnName;
             _pawnInventory.Initialize(data.InventoryStacks);
-            _pawnEquipment.EquipWeapon(GameManager.StaticInstance.ConfigsManager.GetWeapon(data.Weapon), false, false);
-            _pawnEquipment.EquipArmor(GameManager.StaticInstance.ConfigsManager.GetArmor(data.Armor), false, false);
-            //_pawnEquipment.EquipBestItems();
+            if (data.WeaponInRightHand != "empty")
+            {
+                _pawnEquipment.EquipWeaponInRightHand(GameManager.StaticInstance.ConfigsManager.GetWeapon(data.WeaponInRightHand), false, false);
+            }
+            if (data.WeaponInLeftHand != "empty")
+            {
+                _pawnEquipment.EquipWeaponInLeftHand(GameManager.StaticInstance.ConfigsManager.GetWeapon(data.WeaponInLeftHand), false, false);
+            }
+            foreach (string armor in data.Armors)
+            {
+                _pawnEquipment.EquipArmor(GameManager.StaticInstance.ConfigsManager.GetArmor(armor), false, false);
+            }
             _pawnStats.RecalculateStats();
-            _pawnStats.RestoreCurrentHealth(_pawnStats.HealthMax.CurrentValue);
-            _pawnStats.RestoreCurrentEnergy(_pawnStats.EnergyMax.CurrentValue);
             ChangeFaction(GameManager.StaticInstance.ConfigsManager.GetFaction(data.Faction));
             IgnoreMyOwnColliders();// this order???
+            Revive();
             Created = true;
+        }
+
+        public void DeletePawn()
+        {
+            Created = false;
         }
 
         public void ChangeFaction(FactionConfig data)
@@ -151,8 +168,7 @@ namespace WinterUniverse
 
                 }
                 _pawnSound.PlayDeathClip();
-                _pawnCombat.SetTarget();
-                _pawnEquipment.CloseDamageCollider();
+                _pawnCombat.ResetTarget();
                 OnDied?.Invoke();
                 StartCoroutine(ProcessDeathEvent());
             }
@@ -168,12 +184,12 @@ namespace WinterUniverse
         {
             if (IsDead)
             {
-                IsDead = false;
-                _pawnStats.RestoreCurrentHealth(_pawnStats.HealthMax.CurrentValue);
-                _pawnStats.RestoreCurrentEnergy(_pawnStats.EnergyMax.CurrentValue);
                 _pawnAnimator.PlayActionAnimation("Revive", true);
                 OnRevived?.Invoke();
             }
+            IsDead = false;
+            _pawnStats.RestoreCurrentHealth(_pawnStats.HealthMax.CurrentValue);
+            _pawnStats.RestoreCurrentEnergy(_pawnStats.EnergyMax.CurrentValue);
         }
 
         private void IgnoreMyOwnColliders()

@@ -20,11 +20,11 @@ namespace WinterUniverse
             _pawn = animator.GetComponent<PawnController>();
             if (_addIsPerfoming)
             {
-                _pawn.IsPerfomingAction = true;
+                _pawn.IsPerfomingAnimationAction = true;
             }
             else if (_removeIsPerfoming)
             {
-                _pawn.IsPerfomingAction = false;
+                _pawn.IsPerfomingAnimationAction = false;
             }
             if (_addUseGravity)
             {

@@ -57,8 +57,7 @@ namespace WinterUniverse
 
         public void PlayActionAnimation(string name, bool isPerfoming = true, float fadeDelay = 0.1f, bool canMove = false, bool canRotate = false)
         {
-            _animator.runtimeAnimatorController = _pawn.PawnEquipment.WeaponSlot.Config.Controller;
-            _pawn.IsPerfomingAction = isPerfoming;
+            _pawn.IsPerfomingAnimationAction = isPerfoming;
             _pawn.CanMove = canMove;
             _pawn.CanRotate = canRotate;
             _animator.CrossFade(name, fadeDelay);

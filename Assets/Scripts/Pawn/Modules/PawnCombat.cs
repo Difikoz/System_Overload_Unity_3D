@@ -39,10 +39,15 @@ namespace WinterUniverse
             }
             else
             {
-                CurrentTarget = null;
-                DistanceToTarget = float.MaxValue;
-                AngleToTarget = 0f;
+                ResetTarget();
             }
+        }
+
+        public void ResetTarget()
+        {
+            CurrentTarget = null;
+            DistanceToTarget = 0f;
+            AngleToTarget = 0f;
         }
 
         public bool CurrentTargetInViewAngle()

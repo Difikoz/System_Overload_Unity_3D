@@ -1187,7 +1187,7 @@ MonoBehaviour:
     m_Bits: 8
   _detectableMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 9
 --- !u!1 &248928073
 GameObject:
   m_ObjectHideFlags: 0
@@ -3813,7 +3813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fileName: SaveData
   CurrentSaveData:
-    CharacterName: Loner
+    PawnName: Loner
     Faction: Tramps
     Health: 0
     Energy: 0
@@ -8048,7 +8048,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42466202c4f4844da4d71cbf760b0da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dontDestroyOnLoad: 0
+  _dontDestroyOnLoad: 1
 --- !u!1 &2024605661
 GameObject:
   m_ObjectHideFlags: 0

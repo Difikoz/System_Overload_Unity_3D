@@ -8,27 +8,27 @@ namespace WinterUniverse
     {
         public Action OnHitted;
 
-        [SerializeField] protected Collider _collider;
-        [SerializeField] protected List<DamageType> _damageTypes = new();
-        [SerializeField] protected List<EffectCreator> _targetEffects = new();
-        [SerializeField] protected float _splashRadius;
+        [SerializeField] private Collider _collider;
+        [SerializeField] private List<DamageType> _damageTypes = new();
+        [SerializeField] private List<EffectCreator> _targetEffects = new();
+        [SerializeField] private float _splashRadius;
 
-        protected PawnController _owner;
-        protected List<EffectCreator> _ownerEffects = new();
-        protected Vector3 _hitPoint;
-        protected Vector3 _hitDirection;
-        protected List<PawnController> _damagedCharacters = new();
+        private PawnController _owner;
+        private List<EffectCreator> _ownerEffects = new();
+        private Vector3 _hitPoint;
+        private Vector3 _hitDirection;
+        private List<PawnController> _damagedCharacters = new();
 
-        public virtual void Initialize(PawnController owner, List<DamageType> damageTypes, List<EffectCreator> ownerEffects, List<EffectCreator> targetEffects, float splashRadius)
+        public void Initialize(PawnController owner, List<DamageType> damageTypes, List<EffectCreator> ownerEffects, List<EffectCreator> targetEffects, float splashRadius)
         {
             _owner = owner;
-            _damageTypes = damageTypes;
-            _ownerEffects = ownerEffects;
-            _targetEffects = targetEffects;
+            _damageTypes = new(damageTypes);
+            _ownerEffects = new(ownerEffects);
+            _targetEffects = new(targetEffects);
             _splashRadius = splashRadius;
         }
 
-        protected virtual void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             PawnController target = other.GetComponentInParent<PawnController>();
             if (_splashRadius > 0f)
@@ -36,37 +36,20 @@ namespace WinterUniverse
                 Collider[] colliders = Physics.OverlapSphere(transform.position, _splashRadius, GameManager.StaticInstance.LayerManager.PawnMask);
                 foreach (Collider collider in colliders)
                 {
-                    if (CanDamageTarget(target))
+                    target = collider.GetComponentInParent<PawnController>();
+                    if (CanHitTarget(target))
                     {
-                        _damagedCharacters.Add(target);
-                        _hitPoint = GetHitPoint(other);
-                        _hitDirection = GetHitDirection(target);
-                        if (_owner != null)
-                        {
-                            ApplyEffectsToTarget(_owner, _ownerEffects);
-                        }
-                        ApplyDamageToTarget(target);
-                        ApplyEffectsToTarget(target, _targetEffects);
-                        OnHitted?.Invoke();
+                        ApplyHitToTarget(target, other);
                     }
                 }
             }
-            else if (CanDamageTarget(target))
+            else if (CanHitTarget(target))
             {
-                _damagedCharacters.Add(target);
-                _hitPoint = GetHitPoint(other);
-                _hitDirection = GetHitDirection(target);
-                if (_owner != null)
-                {
-                    ApplyEffectsToTarget(_owner, _ownerEffects);
-                }
-                ApplyDamageToTarget(target);
-                ApplyEffectsToTarget(target, _targetEffects);
-                OnHitted?.Invoke();
+                ApplyHitToTarget(target, other);
             }
         }
 
-        protected virtual bool CanDamageTarget(PawnController target)
+        private bool CanHitTarget(PawnController target)
         {
             if (_owner != null && _owner == target)
             {
@@ -75,27 +58,41 @@ namespace WinterUniverse
             return target != null && !target.IsDead && !_damagedCharacters.Contains(target);
         }
 
-        protected Vector3 GetHitPoint(Collider other)
+        private void ApplyHitToTarget(PawnController target, Collider collider)
+        {
+            _damagedCharacters.Add(target);
+            _hitPoint = GetHitPoint(collider);
+            _hitDirection = GetHitDirection(target);
+            if (_owner != null)
+            {
+                ApplyEffectsToTarget(_owner, _ownerEffects);
+            }
+            ApplyDamageToTarget(target);
+            ApplyEffectsToTarget(target, _targetEffects);
+            OnHitted?.Invoke();
+        }
+
+        private Vector3 GetHitPoint(Collider other)
         {
             return other.ClosestPointOnBounds(transform.position);
         }
 
-        protected virtual Vector3 GetHitDirection(PawnController target)
+        private Vector3 GetHitDirection(PawnController target)
         {
-            if (_owner != null)
-            {
-                return (target.transform.position - _owner.transform.position).normalized;
-            }
+            //if (_owner != null)
+            //{
+            //    return (target.transform.position - _owner.transform.position).normalized;
+            //}
             return (_hitPoint - transform.position).normalized;
         }
 
-        protected virtual void ApplyDamageToTarget(PawnController target)
+        private void ApplyDamageToTarget(PawnController target)
         {
             if (_owner != null)
             {
                 foreach (DamageType type in _damageTypes)
                 {
-                    InstantHealthReduceEffect effect = (InstantHealthReduceEffect)GameManager.StaticInstance.ConfigsManager.HealthReduceEffect.CreateEffect(target, _owner, _owner.PawnStats.GetStatByName(type.Element.DamageStat.DisplayName).CurrentValue * _owner.PawnStats.DamageDealt.CurrentValue / 100f + type.Damage, 0f);
+                    InstantHealthReduceEffect effect = (InstantHealthReduceEffect)GameManager.StaticInstance.ConfigsManager.HealthReduceEffect.CreateEffect(target, _owner, _owner.PawnStats.GetStatByName(type.Element.DamageStat.DisplayName).CurrentValue * _owner.PawnStats.DamageDealt.CurrentValue / 100f * type.Damage, 0f);
                     effect.Initialize(type.Element, _hitPoint, _hitDirection);
                     target.PawnEffects.AddEffect(effect);
                 }
@@ -111,7 +108,7 @@ namespace WinterUniverse
             }
         }
 
-        protected virtual void ApplyEffectsToTarget(PawnController target, List<EffectCreator> effects)
+        private void ApplyEffectsToTarget(PawnController target, List<EffectCreator> effects)
         {
             if (target.IsDead)
             {
@@ -133,12 +130,12 @@ namespace WinterUniverse
             }
         }
 
-        public virtual void EnableDamageCollider()
+        public void EnableDamageCollider()
         {
             _collider.enabled = true;
         }
 
-        public virtual void DisableDamageCollider()
+        public void DisableDamageCollider()
         {
             _collider.enabled = false;
             _damagedCharacters.Clear();

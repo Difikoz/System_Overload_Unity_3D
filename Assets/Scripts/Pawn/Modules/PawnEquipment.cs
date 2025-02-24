@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace WinterUniverse
@@ -9,24 +10,51 @@ namespace WinterUniverse
 
         private PawnController _pawn;
 
-        [SerializeField] private WeaponItemConfig _defaultWeapon;
-        [SerializeField] private ArmorItemConfig _defaultArmor;
-        [SerializeField] private WeaponSlot _weaponSlot;
-        [SerializeField] private ArmorSlot _armorSlot;
+        private WeaponSlot _weaponSlotRight;
+        private WeaponSlot _weaponSlotLeft;
+        private List<ArmorSlot> _armorSlots = new();
 
-        public WeaponSlot WeaponSlot => _weaponSlot;
-        public ArmorSlot ArmorSlot => _armorSlot;
+        public WeaponSlot WeaponSlotRight => _weaponSlotRight;
+        public WeaponSlot WeaponSlotLeft => _weaponSlotLeft;
+        public List<ArmorSlot> ArmorSlots => _armorSlots;
 
         public void Initialize()
         {
             _pawn = GetComponent<PawnController>();
-            _weaponSlot = GetComponentInChildren<WeaponSlot>();
-            _armorSlot = GetComponentInChildren<ArmorSlot>();
-            _weaponSlot.Initialize(_defaultWeapon);
-            _armorSlot.Initialize(_defaultArmor);
+            WeaponSlot[] weaponSlots = GetComponentsInChildren<WeaponSlot>();
+            foreach (WeaponSlot slot in weaponSlots)
+            {
+                if (slot.HandType == HandType.Right)
+                {
+                    _weaponSlotRight = slot;
+                }
+                else if (slot.HandType == HandType.Left)
+                {
+                    _weaponSlotLeft = slot;
+                }
+                slot.Initialize();
+            }
+            ArmorSlot[] armorSlots = GetComponentsInChildren<ArmorSlot>();
+            foreach (ArmorSlot slot in armorSlots)
+            {
+                _armorSlots.Add(slot);
+                slot.Initialize();
+            }
         }
 
-        public void EquipWeapon(WeaponItemConfig weapon, bool removeNewFromInventory = true, bool addOldToInventory = true)
+        public void EquipWeapon(WeaponItemConfig weapon, HandType handType, bool removeNewFromInventory = true, bool addOldToInventory = true)
+        {
+            if (handType == HandType.Right)
+            {
+                EquipWeaponInRightHand(weapon, removeNewFromInventory, addOldToInventory);
+            }
+            else if (handType == HandType.Left)
+            {
+                EquipWeaponInLeftHand(weapon, removeNewFromInventory, addOldToInventory);
+            }
+        }
+
+        public void EquipWeaponInRightHand(WeaponItemConfig weapon, bool removeNewFromInventory = true, bool addOldToInventory = true)
         {
             if (weapon == null || _pawn.IsDead)
             {
@@ -36,12 +64,31 @@ namespace WinterUniverse
             {
                 _pawn.PawnInventory.RemoveItem(weapon);
             }
-            if (addOldToInventory && _weaponSlot.Config != _defaultWeapon)
+            if (addOldToInventory)
             {
-                _pawn.PawnInventory.AddItem(_weaponSlot.Config);
+                _pawn.PawnInventory.AddItem(_weaponSlotRight.Config);
             }
-            _weaponSlot.Setup(weapon);
-            _pawn.PawnAnimator.PlayActionAnimation($"Swap Weapon", true);
+            _weaponSlotRight.Setup(weapon);
+            _pawn.PawnAnimator.PlayActionAnimation($"Swap Weapon Right", true);
+            OnEquipmentChanged?.Invoke();
+        }
+
+        public void EquipWeaponInLeftHand(WeaponItemConfig weapon, bool removeNewFromInventory = true, bool addOldToInventory = true)
+        {
+            if (weapon == null || _pawn.IsDead)
+            {
+                return;
+            }
+            if (removeNewFromInventory)
+            {
+                _pawn.PawnInventory.RemoveItem(weapon);
+            }
+            if (addOldToInventory)
+            {
+                _pawn.PawnInventory.AddItem(_weaponSlotLeft.Config);
+            }
+            _weaponSlotLeft.Setup(weapon);
+            _pawn.PawnAnimator.PlayActionAnimation($"Swap Weapon Left", true);
             OnEquipmentChanged?.Invoke();
         }
 
@@ -55,36 +102,38 @@ namespace WinterUniverse
             {
                 _pawn.PawnInventory.RemoveItem(armor);
             }
-            if (addOldToInventory && _armorSlot.Config != _defaultArmor)
+            foreach (ArmorSlot slot in _armorSlots)
             {
-                _pawn.PawnInventory.AddItem(_armorSlot.Config);
+                if (slot.Type == armor.ArmorType)
+                {
+                    if (addOldToInventory)
+                    {
+                        _pawn.PawnInventory.AddItem(slot.Config);
+                    }
+                    slot.Setup(armor);
+                    break;
+                }
             }
-            _armorSlot.Setup(armor);
             OnEquipmentChanged?.Invoke();
         }
 
         public void EquipBestItems()
         {
-            if (_pawn.PawnInventory.GetBestWeapon(out WeaponItemConfig weapon) && weapon.Rating > _weaponSlot.Config.Rating)
+            if (_pawn.PawnInventory.GetBestWeapon(out WeaponItemConfig weapon) && (_weaponSlotRight.Config == null || weapon.Rating > _weaponSlotRight.Config.Rating))
             {
-                EquipWeapon(weapon);
+                EquipWeaponInRightHand(weapon);
             }
-            if (_pawn.PawnInventory.GetBestArmor(out ArmorItemConfig armor) && armor.Rating > _armorSlot.Config.Rating)
+            if (_pawn.PawnInventory.GetBestWeapon(out weapon) && (_weaponSlotLeft.Config == null || weapon.Rating > _weaponSlotLeft.Config.Rating))
             {
-                EquipArmor(armor);
+                EquipWeaponInLeftHand(weapon);
             }
-        }
-
-        public void OpenDamageCollider()
-        {
-            _pawn.PawnSound.PlayAttackClip();
-            _weaponSlot.DamageCollider.EnableDamageCollider();
-            _pawn.PawnSound.PlaySound(_weaponSlot.Config.ActionsClips);
-        }
-
-        public void CloseDamageCollider()
-        {
-            _weaponSlot.DamageCollider.DisableDamageCollider();
+            foreach (ArmorSlot slot in _armorSlots)
+            {
+                if (_pawn.PawnInventory.GetBestArmor(slot.Type, out ArmorItemConfig armor) && (slot.Config == null || armor.Rating > slot.Config.Rating))
+                {
+                    EquipArmor(armor);
+                }
+            }
         }
     }
 }

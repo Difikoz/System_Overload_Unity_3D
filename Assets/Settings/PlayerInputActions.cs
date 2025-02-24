@@ -24,7 +24,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     ""name"": ""PlayerInputActions"",
     ""maps"": [
         {
-            ""name"": ""Character"",
+            ""name"": ""Pawn"",
             ""id"": ""0d4835c9-58cc-4b4a-948b-26d26ac1a853"",
             ""actions"": [
                 {
@@ -73,7 +73,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Fire"",
+                    ""name"": ""ActionMainHand"",
                     ""type"": ""Button"",
                     ""id"": ""27376388-46d3-408e-b509-a3a7e3196c55"",
                     ""expectedControlType"": """",
@@ -82,7 +82,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Aim"",
+                    ""name"": ""ActionSecondHand"",
                     ""type"": ""Button"",
                     ""id"": ""d8ad9bf1-4128-499a-a393-eec5e0869353"",
                     ""expectedControlType"": """",
@@ -117,11 +117,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""bc31e331-af38-40a1-af59-27a8e0c6552a"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Aim"",
+                    ""action"": ""ActionSecondHand"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -132,18 +132,18 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Aim"",
+                    ""action"": ""ActionSecondHand"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
                     ""id"": ""8eb3fb81-0331-4e0a-a2aa-cc5864184f42"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Fire"",
+                    ""action"": ""ActionMainHand"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -154,7 +154,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Fire"",
+                    ""action"": ""ActionMainHand"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -866,15 +866,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Character
-        m_Character = asset.FindActionMap("Character", throwIfNotFound: true);
-        m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
-        m_Character_Look = m_Character.FindAction("Look", throwIfNotFound: true);
-        m_Character_Run = m_Character.FindAction("Run", throwIfNotFound: true);
-        m_Character_Interact = m_Character.FindAction("Interact", throwIfNotFound: true);
-        m_Character_Jump = m_Character.FindAction("Jump", throwIfNotFound: true);
-        m_Character_Fire = m_Character.FindAction("Fire", throwIfNotFound: true);
-        m_Character_Aim = m_Character.FindAction("Aim", throwIfNotFound: true);
+        // Pawn
+        m_Pawn = asset.FindActionMap("Pawn", throwIfNotFound: true);
+        m_Pawn_Move = m_Pawn.FindAction("Move", throwIfNotFound: true);
+        m_Pawn_Look = m_Pawn.FindAction("Look", throwIfNotFound: true);
+        m_Pawn_Run = m_Pawn.FindAction("Run", throwIfNotFound: true);
+        m_Pawn_Interact = m_Pawn.FindAction("Interact", throwIfNotFound: true);
+        m_Pawn_Jump = m_Pawn.FindAction("Jump", throwIfNotFound: true);
+        m_Pawn_ActionMainHand = m_Pawn.FindAction("ActionMainHand", throwIfNotFound: true);
+        m_Pawn_ActionSecondHand = m_Pawn.FindAction("ActionSecondHand", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -894,7 +894,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
 
     ~@PlayerInputActions()
     {
-        UnityEngine.Debug.Assert(!m_Character.enabled, "This will cause a leak and performance issues, PlayerInputActions.Character.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Pawn.enabled, "This will cause a leak and performance issues, PlayerInputActions.Pawn.Disable() has not been called.");
         UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PlayerInputActions.UI.Disable() has not been called.");
     }
 
@@ -954,36 +954,36 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Character
-    private readonly InputActionMap m_Character;
-    private List<ICharacterActions> m_CharacterActionsCallbackInterfaces = new List<ICharacterActions>();
-    private readonly InputAction m_Character_Move;
-    private readonly InputAction m_Character_Look;
-    private readonly InputAction m_Character_Run;
-    private readonly InputAction m_Character_Interact;
-    private readonly InputAction m_Character_Jump;
-    private readonly InputAction m_Character_Fire;
-    private readonly InputAction m_Character_Aim;
-    public struct CharacterActions
+    // Pawn
+    private readonly InputActionMap m_Pawn;
+    private List<IPawnActions> m_PawnActionsCallbackInterfaces = new List<IPawnActions>();
+    private readonly InputAction m_Pawn_Move;
+    private readonly InputAction m_Pawn_Look;
+    private readonly InputAction m_Pawn_Run;
+    private readonly InputAction m_Pawn_Interact;
+    private readonly InputAction m_Pawn_Jump;
+    private readonly InputAction m_Pawn_ActionMainHand;
+    private readonly InputAction m_Pawn_ActionSecondHand;
+    public struct PawnActions
     {
         private @PlayerInputActions m_Wrapper;
-        public CharacterActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Character_Move;
-        public InputAction @Look => m_Wrapper.m_Character_Look;
-        public InputAction @Run => m_Wrapper.m_Character_Run;
-        public InputAction @Interact => m_Wrapper.m_Character_Interact;
-        public InputAction @Jump => m_Wrapper.m_Character_Jump;
-        public InputAction @Fire => m_Wrapper.m_Character_Fire;
-        public InputAction @Aim => m_Wrapper.m_Character_Aim;
-        public InputActionMap Get() { return m_Wrapper.m_Character; }
+        public PawnActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Pawn_Move;
+        public InputAction @Look => m_Wrapper.m_Pawn_Look;
+        public InputAction @Run => m_Wrapper.m_Pawn_Run;
+        public InputAction @Interact => m_Wrapper.m_Pawn_Interact;
+        public InputAction @Jump => m_Wrapper.m_Pawn_Jump;
+        public InputAction @ActionMainHand => m_Wrapper.m_Pawn_ActionMainHand;
+        public InputAction @ActionSecondHand => m_Wrapper.m_Pawn_ActionSecondHand;
+        public InputActionMap Get() { return m_Wrapper.m_Pawn; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(CharacterActions set) { return set.Get(); }
-        public void AddCallbacks(ICharacterActions instance)
+        public static implicit operator InputActionMap(PawnActions set) { return set.Get(); }
+        public void AddCallbacks(IPawnActions instance)
         {
-            if (instance == null || m_Wrapper.m_CharacterActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_CharacterActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_PawnActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PawnActionsCallbackInterfaces.Add(instance);
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -999,15 +999,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Fire.started += instance.OnFire;
-            @Fire.performed += instance.OnFire;
-            @Fire.canceled += instance.OnFire;
-            @Aim.started += instance.OnAim;
-            @Aim.performed += instance.OnAim;
-            @Aim.canceled += instance.OnAim;
+            @ActionMainHand.started += instance.OnActionMainHand;
+            @ActionMainHand.performed += instance.OnActionMainHand;
+            @ActionMainHand.canceled += instance.OnActionMainHand;
+            @ActionSecondHand.started += instance.OnActionSecondHand;
+            @ActionSecondHand.performed += instance.OnActionSecondHand;
+            @ActionSecondHand.canceled += instance.OnActionSecondHand;
         }
 
-        private void UnregisterCallbacks(ICharacterActions instance)
+        private void UnregisterCallbacks(IPawnActions instance)
         {
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
@@ -1024,29 +1024,29 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Fire.started -= instance.OnFire;
-            @Fire.performed -= instance.OnFire;
-            @Fire.canceled -= instance.OnFire;
-            @Aim.started -= instance.OnAim;
-            @Aim.performed -= instance.OnAim;
-            @Aim.canceled -= instance.OnAim;
+            @ActionMainHand.started -= instance.OnActionMainHand;
+            @ActionMainHand.performed -= instance.OnActionMainHand;
+            @ActionMainHand.canceled -= instance.OnActionMainHand;
+            @ActionSecondHand.started -= instance.OnActionSecondHand;
+            @ActionSecondHand.performed -= instance.OnActionSecondHand;
+            @ActionSecondHand.canceled -= instance.OnActionSecondHand;
         }
 
-        public void RemoveCallbacks(ICharacterActions instance)
+        public void RemoveCallbacks(IPawnActions instance)
         {
-            if (m_Wrapper.m_CharacterActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_PawnActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(ICharacterActions instance)
+        public void SetCallbacks(IPawnActions instance)
         {
-            foreach (var item in m_Wrapper.m_CharacterActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_PawnActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_CharacterActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_PawnActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public CharacterActions @Character => new CharacterActions(this);
+    public PawnActions @Pawn => new PawnActions(this);
 
     // UI
     private readonly InputActionMap m_UI;
@@ -1207,15 +1207,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_GamepadSchemeIndex];
         }
     }
-    public interface ICharacterActions
+    public interface IPawnActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnFire(InputAction.CallbackContext context);
-        void OnAim(InputAction.CallbackContext context);
+        void OnActionMainHand(InputAction.CallbackContext context);
+        void OnActionSecondHand(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

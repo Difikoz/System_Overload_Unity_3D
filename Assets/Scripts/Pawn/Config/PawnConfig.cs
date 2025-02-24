@@ -6,21 +6,28 @@ namespace WinterUniverse
     [CreateAssetMenu(fileName = "Pawn", menuName = "Winter Universe/Pawn/New Pawn")]
     public class PawnConfig : ScriptableObject
     {
-        public string CharacterName = "Name";
+        public string PawnName = "Name";
         public FactionConfig Faction;
-        public WeaponItemConfig Weapon;
-        public ArmorItemConfig Armor;
+        public WeaponItemConfig WeaponInRightHand;
+        public WeaponItemConfig WeaponInLeftHand;
+        public List<ArmorItemConfig> Armors = new();
         public List<ItemStack> StartingItems = new();
 
         public PawnSaveData GetData()
         {
             PawnSaveData data = new()
             {
-                PawnName = CharacterName,
+                PawnName = PawnName,
                 Faction = Faction.DisplayName,
-                Weapon = Weapon.DisplayName,
-                Armor = Armor.DisplayName,
+                WeaponInRightHand = WeaponInRightHand.DisplayName,
+                WeaponInLeftHand = WeaponInLeftHand.DisplayName,
             };
+            data.Armors.Clear();
+            foreach (ArmorItemConfig armor in Armors)
+            {
+                data.Armors.Add(armor.DisplayName);
+            }
+            data.InventoryStacks.Clear();
             foreach (ItemStack stack in StartingItems)
             {
                 if (data.InventoryStacks.ContainsKey(stack.Item.DisplayName))

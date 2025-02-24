@@ -33,14 +33,14 @@ namespace WinterUniverse
         public void OnUpdate()
         {
             _pawn.IsRunning = false;
-            _pawn.IsFiring = false;
-            _pawn.IsAiming = false;
+            _pawn.IsRightHandAttacking = false;
+            _pawn.IsLeftHandAttacking = false;
             _pawn.MoveDirection = _agent.desiredVelocity;
             if (_pawn.PawnCombat.CurrentTarget != null && _pawn.PawnCombat.CurrentTargetIsVisible())
             {
                 _pawn.LookDirection = (_pawn.PawnCombat.CurrentTarget.transform.position - transform.position).normalized;
-                _pawn.IsFiring = true;
-                _pawn.IsAiming = true;
+                _pawn.IsRightHandAttacking = true;
+                _pawn.IsLeftHandAttacking = true;
             }
             else if (!_reachedDestination)
             {
@@ -84,7 +84,7 @@ namespace WinterUniverse
             if (_agent.hasPath && _agent.remainingDistance > _agent.stoppingDistance)
             {
                 _reachedDestination = false;
-                if (_pawn.IsPerfomingAction)
+                if (_pawn.IsPerfomingAnimationAction)
                 {
                     StopMovement();
                 }

@@ -96,8 +96,6 @@ namespace WinterUniverse
             _uiManager.LoadingScreenUI.Hide();
             Debug.Log($"Loaded : {Time.timeSinceLevelLoad} seconds.");
             yield return null;
-            _inputManager.Enable();
-            yield return null;
             _completed = true;
         }
 
@@ -107,8 +105,9 @@ namespace WinterUniverse
             {
                 return;
             }
-            _timeManager.OnUpdate();
+            _inputManager.OnUpdate();
             _playerManager.OnUpdate();
+            _timeManager.OnUpdate();
         }
 
         private void LateUpdate()

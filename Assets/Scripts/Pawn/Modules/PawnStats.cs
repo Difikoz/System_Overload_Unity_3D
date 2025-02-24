@@ -53,21 +53,23 @@ namespace WinterUniverse
         [HideInInspector] public Stat ChemicalResistance;
 
         [HideInInspector] public Stat JumpForce;
+        [HideInInspector] public Stat DashForce;
         [HideInInspector] public Stat MoveSpeed;
         [HideInInspector] public Stat RotateSpeed;
 
-        [HideInInspector] public Stat JumpEnergyCost;
         [HideInInspector] public Stat RunEnergyCost;
+        [HideInInspector] public Stat JumpEnergyCost;
+        [HideInInspector] public Stat DashEnergyCost;
 
         [HideInInspector] public Stat HearRadius;
         [HideInInspector] public Stat ViewDistance;
         [HideInInspector] public Stat ViewAngle;
         #endregion
 
-        [SerializeField] private float _healthRegenerationTick = 0.5f;
-        [SerializeField] private float _energyRegenerationTick = 0.25f;
-        [SerializeField] private float _healthRegenerationDelay = 10f;
-        [SerializeField] private float _energyRegenerationDelay = 5f;
+        [SerializeField] private float _healthRegenerationTick = 0.5f; // do stat
+        [SerializeField] private float _energyRegenerationTick = 0.25f; // do stat
+        [SerializeField] private float _healthRegenerationDelay = 10f; // do stat
+        [SerializeField] private float _energyRegenerationDelay = 5f; // do stat
 
         private float _healthRegenerationDelayTimer;
         private float _healthRegenerationTickTimer;
@@ -121,6 +123,16 @@ namespace WinterUniverse
             OnHealthChanged?.Invoke(HealthCurrent, HealthMax.CurrentValue);
         }
 
+        public void SetCurrentHealth(float value)
+        {
+            if (_pawn.IsDead || value <= 0f)
+            {
+                return;
+            }
+            HealthCurrent = Mathf.Clamp(value, 0f, HealthMax.CurrentValue);
+            OnHealthChanged?.Invoke(HealthCurrent, HealthMax.CurrentValue);
+        }
+
         public void ReduceCurrentEnergy(float value)
         {
             if (_pawn.IsDead || value <= 0f)
@@ -139,6 +151,16 @@ namespace WinterUniverse
                 return;
             }
             EnergyCurrent = Mathf.Clamp(EnergyCurrent + value, 0f, EnergyMax.CurrentValue);
+            OnEnergyChanged?.Invoke(EnergyCurrent, EnergyMax.CurrentValue);
+        }
+
+        public void SetCurrentEnergy(float value)
+        {
+            if (_pawn.IsDead || value <= 0f)
+            {
+                return;
+            }
+            EnergyCurrent = Mathf.Clamp(value, 0f, EnergyMax.CurrentValue);
             OnEnergyChanged?.Invoke(EnergyCurrent, EnergyMax.CurrentValue);
         }
 
@@ -260,13 +282,17 @@ namespace WinterUniverse
                 {
                     RotateSpeed = s;
                 }
+                else if (s.Data.DisplayName == "Run Energy Cost")
+                {
+                    RunEnergyCost = s;
+                }
                 else if (s.Data.DisplayName == "Jump Energy Cost")
                 {
                     JumpEnergyCost = s;
                 }
-                else if (s.Data.DisplayName == "Run Energy Cost")
+                else if (s.Data.DisplayName == "Dash Energy Cost")
                 {
-                    RunEnergyCost = s;
+                    DashEnergyCost = s;
                 }
                 else if (s.Data.DisplayName == "Hear Radius")
                 {
@@ -347,7 +373,7 @@ namespace WinterUniverse
 
         private void RegenerateEnergy()
         {
-            if (_pawn.IsRunning || _pawn.IsPerfomingAction)
+            if (_pawn.IsRunning || _pawn.IsPerfomingAnimationAction)
             {
                 return;
             }

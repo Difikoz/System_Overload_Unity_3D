@@ -177,6 +177,25 @@ namespace WinterUniverse
             return item != null;
         }
 
+        public bool GetBestArmor(ArmorTypeConfig type, out ArmorItemConfig item)
+        {
+            item = null;
+            float rating = 0;
+            foreach (ItemStack stack in _stacks)
+            {
+                if (stack.Item.ItemType.DisplayName == "Armor")
+                {
+                    ArmorItemConfig armor = (ArmorItemConfig)stack.Item;
+                    if (armor.Rating > rating && armor.ArmorType == type)
+                    {
+                        rating = armor.Rating;
+                        item = armor;
+                    }
+                }
+            }
+            return item != null;
+        }
+
         public bool GetBestConsumable(ConsumableTypeConfig type, out ConsumableItemConfig item)
         {
             item = null;

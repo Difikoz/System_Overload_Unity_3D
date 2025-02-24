@@ -48,7 +48,7 @@ namespace WinterUniverse
 
         public void AttempToInteract()
         {
-            if (_pawn.IsPerfomingAction)
+            if (_pawn.IsPerfomingAnimationAction)
             {
                 return;
             }

@@ -2,7 +2,7 @@
     "name": "PlayerInputActions",
     "maps": [
         {
-            "name": "Character",
+            "name": "Pawn",
             "id": "0d4835c9-58cc-4b4a-948b-26d26ac1a853",
             "actions": [
                 {
@@ -51,7 +51,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Fire",
+                    "name": "ActionMainHand",
                     "type": "Button",
                     "id": "27376388-46d3-408e-b509-a3a7e3196c55",
                     "expectedControlType": "",
@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Aim",
+                    "name": "ActionSecondHand",
                     "type": "Button",
                     "id": "d8ad9bf1-4128-499a-a393-eec5e0869353",
                     "expectedControlType": "",
@@ -95,11 +95,11 @@
                 {
                     "name": "",
                     "id": "bc31e331-af38-40a1-af59-27a8e0c6552a",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Aim",
+                    "action": "ActionSecondHand",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -110,18 +110,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Aim",
+                    "action": "ActionSecondHand",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "8eb3fb81-0331-4e0a-a2aa-cc5864184f42",
-                    "path": "<Gamepad>/leftShoulder",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Fire",
+                    "action": "ActionMainHand",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -132,7 +132,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Fire",
+                    "action": "ActionMainHand",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

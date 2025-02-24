@@ -22,7 +22,7 @@ namespace WinterUniverse
             else
             {
                 CurrentSaveData = new();
-                GameManager.StaticInstance.PlayerManager.Pawn.CreateCharacter(CurrentSaveData);
+                GameManager.StaticInstance.PlayerManager.Pawn.CreatePawn(CurrentSaveData);
                 SaveGame();
             }
             GameManager.StaticInstance.PlayerManager.LoadData(CurrentSaveData);
