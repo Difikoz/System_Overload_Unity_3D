@@ -3812,6 +3812,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fileName: SaveData
+  _playerConfig: {fileID: 11400000, guid: 755e5888879a6844b8deab2e8fcd8d4c, type: 2}
   CurrentSaveData:
     PawnName: Loner
     Faction: Tramps
@@ -3834,8 +3835,9 @@ MonoBehaviour:
     InventoryStacks:
       _keys: []
       _values: 
-    Weapon: 
-    Armor: 
+    WeaponInRightHand: 
+    WeaponInLeftHand: 
+    Armors: []
 --- !u!1 &805151322
 GameObject:
   m_ObjectHideFlags: 0
@@ -4069,6 +4071,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3ec31b5acc5a75245ba102dd6d545efa, type: 2}
   - {fileID: 11400000, guid: 1a43558787f13c54da4bacc43e67734c, type: 2}
   - {fileID: 11400000, guid: c416c0e414413714385ae9a1af38b223, type: 2}
+  - {fileID: 11400000, guid: a62b8aedd72c86e46a63a121387f352c, type: 2}
+  - {fileID: 11400000, guid: c0f408e29d5161746bcb109f9e3ccc09, type: 2}
   - {fileID: 11400000, guid: bef406e40eb8b254881ea383bc1e0448, type: 2}
   - {fileID: 11400000, guid: 82f6f284bd30a13429caa530f21f4520, type: 2}
   - {fileID: 11400000, guid: 43c65deddb177ec409ff69bdf32b1583, type: 2}
@@ -4095,10 +4099,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 547e1af124e9b8945b0d3f3e11ba7c73, type: 2}
   - {fileID: 11400000, guid: 4599ab3740c19ba4e9b9d537fba4dd39, type: 2}
   _weapons:
-  - {fileID: 11400000, guid: 9a4f3cdae0d30394b854fb253e8119e0, type: 2}
+  - {fileID: 11400000, guid: ba511fec059bac245910c9f6954eef1d, type: 2}
   - {fileID: 11400000, guid: 07713a3acc18bb943b92170dee3428e0, type: 2}
   _armors:
-  - {fileID: 11400000, guid: 0928e4ca0680caf4bbbaf6a7eaa4828e, type: 2}
+  - {fileID: 11400000, guid: 988f796d3bf1bb04e9d9c028eaf048cf, type: 2}
+  - {fileID: 11400000, guid: d2e2b237edbbe6340bda32f586e0bdf1, type: 2}
+  - {fileID: 11400000, guid: bbfa5ed40d4da334db6f0bb38cc0a9f5, type: 2}
+  - {fileID: 11400000, guid: a92dbc664933fe240bd4bc75c75c56b2, type: 2}
   _consumables:
   - {fileID: 11400000, guid: 4c2a16b946962714da433e472e6c7a2e, type: 2}
   - {fileID: 11400000, guid: c9cf61f410a8ee144b3c33e529ce7804, type: 2}
@@ -8048,7 +8055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c42466202c4f4844da4d71cbf760b0da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dontDestroyOnLoad: 1
+  _dontDestroyOnLoad: 0
 --- !u!1 &2024605661
 GameObject:
   m_ObjectHideFlags: 0

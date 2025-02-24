@@ -5,6 +5,7 @@ namespace WinterUniverse
     public class WorldSaveLoadManager : MonoBehaviour
     {
         [SerializeField] private string _fileName = "SaveData";
+        [SerializeField] private PawnConfig _playerConfig;
         public PawnSaveData CurrentSaveData;
 
         public void SaveGame()
@@ -21,7 +22,7 @@ namespace WinterUniverse
             }
             else
             {
-                CurrentSaveData = new();
+                CurrentSaveData = _playerConfig.GetData();
                 GameManager.StaticInstance.PlayerManager.Pawn.CreatePawn(CurrentSaveData);
                 SaveGame();
             }

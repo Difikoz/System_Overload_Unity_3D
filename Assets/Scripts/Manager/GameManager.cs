@@ -5,6 +5,8 @@ namespace WinterUniverse
 {
     public class GameManager : Singleton<GameManager>
     {
+        [SerializeField] private bool _clearSaveData;
+
         private WorldPlayerManager _playerManager;
         private WorldInputManager _inputManager;
         private WorldCameraManager _cameraManager;
@@ -108,6 +110,11 @@ namespace WinterUniverse
             _inputManager.OnUpdate();
             _playerManager.OnUpdate();
             _timeManager.OnUpdate();
+            if (_clearSaveData)
+            {
+                _clearSaveData = false;
+                _saveLoadManager.DeleteGame();
+            }
         }
 
         private void LateUpdate()

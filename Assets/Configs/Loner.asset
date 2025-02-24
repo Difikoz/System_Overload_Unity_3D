@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c8acc3deb7f6741b9a5477fb4dd2ac, type: 3}
   m_Name: Loner
   m_EditorClassIdentifier: 
-  CharacterName: Loner
+  PawnName: Loner
   Faction: {fileID: 11400000, guid: 4599ab3740c19ba4e9b9d537fba4dd39, type: 2}
-  Weapon: {fileID: 11400000, guid: 07713a3acc18bb943b92170dee3428e0, type: 2}
-  Armor: {fileID: 11400000, guid: d2e2b237edbbe6340bda32f586e0bdf1, type: 2}
+  WeaponInRightHand: {fileID: 11400000, guid: ba511fec059bac245910c9f6954eef1d, type: 2}
+  WeaponInLeftHand: {fileID: 11400000, guid: 07713a3acc18bb943b92170dee3428e0, type: 2}
+  Armors:
+  - {fileID: 11400000, guid: 96e442699687707438477c35adcffdc0, type: 2}
+  - {fileID: 11400000, guid: 024a6de960548be46b14ebcb7fa6466c, type: 2}
+  - {fileID: 11400000, guid: 8e17857fa4e404241891226abdb7c43b, type: 2}
+  - {fileID: 11400000, guid: 5695fd45916fd8449b18e853cbd0c240, type: 2}
   StartingItems: []

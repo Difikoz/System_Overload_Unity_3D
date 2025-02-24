@@ -19,12 +19,13 @@ namespace WinterUniverse
         public void Initialize()
         {
             _pawn = GetComponentInParent<PawnController>();
+            _currentRenderer = new();
             ForceUpdateMeshes();
         }
 
         public void Setup(ArmorItemConfig armor)
         {
-            if(_config != null)
+            if (_config != null)
             {
                 foreach (StatModifierCreator creator in _config.Modifiers)
                 {

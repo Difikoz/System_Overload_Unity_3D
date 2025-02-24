@@ -104,6 +104,10 @@ namespace WinterUniverse
                 {
                     data.Armors.Add(slot.Config.DisplayName);
                 }
+                else
+                {
+                    data.Armors.Add($"Human {slot.Type.DisplayName}");// example - Human Body
+                }
             }
             data.Transform.SetPositionAndRotation(_pawn.transform.position, _pawn.transform.eulerAngles);
         }
