@@ -8056,6 +8056,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dontDestroyOnLoad: 0
+  _clearSaveData: 0
 --- !u!1 &2024605661
 GameObject:
   m_ObjectHideFlags: 0
