@@ -37,7 +37,11 @@ namespace WinterUniverse
             _inventoryUI.Initialize();
             _factionUI.Initialize();
             _vitalityUI.Initialize();
-            _interactionUI.Initialize();
+        }
+
+        public void OnToggleStatusBar()
+        {
+            // from input
         }
 
         public void ShowHUD()

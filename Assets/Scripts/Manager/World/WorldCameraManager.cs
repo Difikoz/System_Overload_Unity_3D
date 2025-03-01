@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace WinterUniverse
 {
@@ -28,10 +29,19 @@ namespace WinterUniverse
             _cameraDefaultOffset = _mainCamera.transform.localPosition.z;
         }
 
-        public void OnUpdate()
+        public void OnLook(InputValue value)
         {
-            transform.position = Vector3.Lerp(transform.position, GameManager.StaticInstance.PlayerManager.transform.position, _followSpeed * Time.deltaTime);
-            _lookInput = GameManager.StaticInstance.InputManager.LookInput;
+            _lookInput = value.Get<Vector2>();
+        }
+
+        public void OnLockTarget()
+        {
+            // from input
+        }
+
+        public void OnLateUpdate()
+        {
+            transform.position = Vector3.Lerp(transform.position, GameManager.StaticInstance.PlayerManager.Pawn.transform.position, _followSpeed * Time.deltaTime);
             HandleRotation();
             HandleCollision();
         }
@@ -45,7 +55,7 @@ namespace WinterUniverse
             if (_lookInput.y != 0f)
             {
                 _lookAngle = Mathf.Clamp(_lookAngle - (_lookInput.y * _verticalRotationSpeed * Time.deltaTime), -_maxLookAngle, _minLookAngle);
-                _verticalRoot.localRotation = Quaternion.Euler(Vector3.right * _lookAngle);
+                _verticalRoot.localRotation = Quaternion.Euler(_lookAngle, 0f, 0f);
             }
         }
 

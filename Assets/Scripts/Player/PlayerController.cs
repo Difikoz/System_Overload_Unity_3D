@@ -1,11 +1,18 @@
 using Lean.Pool;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace WinterUniverse
 {
-    public class WorldPlayerManager : MonoBehaviour
+    public class PlayerController : MonoBehaviour
     {
         private PawnController _pawn;
+        private Vector2 _moveInput;
+        private bool _runInput;
+        private bool _jumpInput;
+        private bool _interactInput;
+        private bool _actionMainInput;
+        private bool _actionSecondInput;
         private RaycastHit _cameraHit;
 
         public PawnController Pawn => _pawn;
@@ -24,9 +31,39 @@ namespace WinterUniverse
             _pawn.OnRevived -= OnRevive;
         }
 
+        public void OnMove(InputValue value)
+        {
+            _moveInput = value.Get<Vector2>();
+        }
+
+        public void OnRun(InputValue value)
+        {
+            _runInput = value.isPressed;
+        }
+
+        public void OnJump(InputValue value)
+        {
+            _jumpInput = value.isPressed;
+        }
+
+        public void OnInteract(InputValue value)
+        {
+            _interactInput = value.isPressed;
+        }
+
+        public void OnActionMainHand(InputValue value)
+        {
+            _actionMainInput = value.isPressed;
+        }
+
+        public void OnActionSecondHand(InputValue value)
+        {
+            _actionSecondInput = value.isPressed;
+        }
+
         public void OnUpdate()
         {
-            _pawn.MoveDirection = GameManager.StaticInstance.CameraManager.transform.right * GameManager.StaticInstance.InputManager.MoveInput.x + GameManager.StaticInstance.CameraManager.transform.forward * GameManager.StaticInstance.InputManager.MoveInput.y;
+            _pawn.MoveDirection = GameManager.StaticInstance.CameraManager.transform.right * _moveInput.x + GameManager.StaticInstance.CameraManager.transform.forward * _moveInput.y;
             if (Physics.Raycast(_pawn.PawnAnimator.HeadPoint.position, GameManager.StaticInstance.CameraManager.transform.forward, out _cameraHit, float.MaxValue, GameManager.StaticInstance.LayerManager.DetectableMask))
             {
                 _pawn.LookDirection = (_cameraHit.point - _pawn.PawnAnimator.HeadPoint.position).normalized;
@@ -35,11 +72,11 @@ namespace WinterUniverse
             {
                 _pawn.LookDirection = GameManager.StaticInstance.CameraManager.transform.forward;
             }
-            _pawn.IsRunning = GameManager.StaticInstance.InputManager.RunInput && _pawn.PawnLocomotion.HandleRunning();
-            _pawn.IsJumping = GameManager.StaticInstance.InputManager.JumpInput;
-            _pawn.IsInteracting = GameManager.StaticInstance.InputManager.InteractInput;
-            _pawn.IsRightHandAttacking = GameManager.StaticInstance.InputManager.ActionMainInput;
-            if (GameManager.StaticInstance.InputManager.ActionSecondInput)
+            _pawn.IsRunning = _runInput && _pawn.PawnLocomotion.HandleRunning();
+            _pawn.IsJumping = _jumpInput;
+            _pawn.IsInteracting = _interactInput;
+            _pawn.IsRightHandAttacking = _actionMainInput;
+            if (_actionSecondInput)
             {
                 _pawn.IsLeftHandAttacking = true;
                 //zoom in camera
@@ -114,7 +151,7 @@ namespace WinterUniverse
 
         public void LoadData(PawnSaveData data)
         {
-            _pawn.CreatePawn(data);
+            _pawn.CreatePawn(data, "Player");
             _pawn.PawnStats.SetCurrentHealth(data.Health);
             _pawn.PawnStats.SetCurrentEnergy(data.Energy);
             _pawn.transform.SetPositionAndRotation(data.Transform.GetPosition(), data.Transform.GetRotation());

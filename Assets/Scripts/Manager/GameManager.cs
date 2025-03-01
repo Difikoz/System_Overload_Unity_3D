@@ -7,8 +7,7 @@ namespace WinterUniverse
     {
         [SerializeField] private bool _clearSaveData;
 
-        private WorldPlayerManager _playerManager;
-        private WorldInputManager _inputManager;
+        private PlayerController _playerManager;
         private WorldCameraManager _cameraManager;
         private WorldUIManager _uiManager;
         private WorldLayerManager _layerManager;
@@ -20,8 +19,7 @@ namespace WinterUniverse
 
         private bool _completed;
 
-        public WorldPlayerManager PlayerManager => _playerManager;
-        public WorldInputManager InputManager => _inputManager;
+        public PlayerController PlayerManager => _playerManager;
         public WorldCameraManager CameraManager => _cameraManager;
         public WorldUIManager UIManager => _uiManager;
         public WorldLayerManager LayerManager => _layerManager;
@@ -41,8 +39,7 @@ namespace WinterUniverse
         {
             WaitForSeconds delay = new(0.25f);
             yield return null;
-            _playerManager = GetComponentInChildren<WorldPlayerManager>();
-            _inputManager = GetComponentInChildren<WorldInputManager>();
+            _playerManager = GetComponentInChildren<PlayerController>();
             _cameraManager = GetComponentInChildren<WorldCameraManager>();
             _uiManager = GetComponentInChildren<WorldUIManager>();
             _layerManager = GetComponentInChildren<WorldLayerManager>();
@@ -74,9 +71,6 @@ namespace WinterUniverse
             yield return delay;
             _uiManager.LoadingScreenUI.UpdateLoadingScreen("Initialize Player", 1, 1);
             yield return delay;
-            _uiManager.LoadingScreenUI.UpdateLoadingScreen("Initialize Player Input", 0, 1);
-            _inputManager.Initialize();
-            yield return delay;
             _uiManager.LoadingScreenUI.UpdateLoadingScreen("Initialize Player Input", 1, 1);
             yield return delay;
             _uiManager.LoadingScreenUI.UpdateLoadingScreen("Initialize Player Camera", 0, 1);
@@ -107,7 +101,6 @@ namespace WinterUniverse
             {
                 return;
             }
-            _inputManager.OnUpdate();
             _playerManager.OnUpdate();
             _timeManager.OnUpdate();
             if (_clearSaveData)
@@ -123,7 +116,7 @@ namespace WinterUniverse
             {
                 return;
             }
-            _cameraManager.OnUpdate();
+            _cameraManager.OnLateUpdate();
         }
     }
 }

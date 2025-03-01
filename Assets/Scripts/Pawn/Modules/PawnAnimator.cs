@@ -55,11 +55,15 @@ namespace WinterUniverse
             _animator.SetBool(name, value);
         }
 
-        public void PlayActionAnimation(string name, bool isPerfoming = true, float fadeDelay = 0.1f, bool canMove = false, bool canRotate = false)
+        public void PlayActionAnimation(string name, bool isPerfoming = true, float fadeDelay = 0.1f, bool canMove = false, bool canRotate = false, bool canJump = false, bool canDash = false, bool canAttack = false, bool canInteract = false)
         {
             _pawn.IsPerfomingAnimationAction = isPerfoming;
             _pawn.CanMove = canMove;
             _pawn.CanRotate = canRotate;
+            _pawn.CanJump = canJump;
+            _pawn.CanDash = canDash;
+            _pawn.CanAttack = canAttack;
+            _pawn.CanInteract = canInteract;
             _animator.CrossFade(name, fadeDelay);
         }
 

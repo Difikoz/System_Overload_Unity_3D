@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -4095507896301451228}
   - component: {fileID: -833756658606176842}
   m_Layer: 2
-  m_Name: Loot Item Prefab
+  m_Name: Interactable Item
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

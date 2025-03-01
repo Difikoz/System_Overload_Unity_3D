@@ -6,7 +6,7 @@ namespace WinterUniverse
     {
         public RegionData Data;
 
-        private WorldPlayerManager _player;
+        private PlayerController _player;
 
         protected override void OnTriggerEnter(Collider other)
         {

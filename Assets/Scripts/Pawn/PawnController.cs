@@ -56,6 +56,10 @@ namespace WinterUniverse
         public bool UseGravity = true;
         public bool CanMove = true;
         public bool CanRotate = true;
+        public bool CanJump = true;
+        public bool CanDash = true;
+        public bool CanAttack = true;
+        public bool CanInteract = true;
         public bool IsGrounded = true;
         public bool IsMoving;
         public bool IsRunning;
@@ -120,10 +124,11 @@ namespace WinterUniverse
             _pawnLocomotion.OnUpdate();
         }
 
-        public void CreatePawn(PawnSaveData data)
+        public void CreatePawn(PawnSaveData data, string tag)
         {
             Created = false;
             _pawnName = data.PawnName;
+            gameObject.tag = tag;
             _pawnInventory.Initialize(data.InventoryStacks);
             if (data.WeaponInRightHand != "empty")
             {

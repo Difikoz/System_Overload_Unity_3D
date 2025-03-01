@@ -4,44 +4,15 @@ namespace WinterUniverse
 {
     public abstract class Interactable : MonoBehaviour
     {
-        public abstract string GetInteractionMessage();
-        public abstract bool CanInteract(PawnController character);
-        public abstract void Interact(PawnController character);
+        [SerializeField] protected bool _interactableForAI;
+        [SerializeField] protected string _interactionMessage = "Action";
+        [SerializeField] protected string _notificationMessage = "Notification";
 
-        protected virtual void Awake()
-        {
+        public bool InteractableForAI => _interactableForAI;
 
-        }
-
-        protected virtual void OnEnable()
-        {
-
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.TryGetComponent(out PawnController character))
-            {
-                OnEnter(character);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.TryGetComponent(out PawnController character))
-            {
-                OnExit(character);
-            }
-        }
-
-        protected virtual void OnEnter(PawnController character)
-        {
-            character.PawnInteraction.AddInteractable(this);
-        }
-
-        protected virtual void OnExit(PawnController character)
-        {
-            character.PawnInteraction.RemoveInteractable(this);
-        }
+        public virtual string GetInteractionMessage() => _interactionMessage;
+        public virtual string GetNotificationMessage() => _notificationMessage;
+        public virtual bool CanInteract(PawnController pawn) => true;
+        public abstract void Interact(PawnController pawn);
     }
 }

@@ -8,7 +8,7 @@ namespace WinterUniverse
         public ItemConfig Item;
         public int Amount = 1;
 
-        private ItemInteractable _spawnedItem;
+        private InteractableItem _spawnedItem;
 
         private void OnEnable()
         {
@@ -21,7 +21,7 @@ namespace WinterUniverse
             {
                 LeanPool.Despawn(_spawnedItem.gameObject);
             }
-            _spawnedItem = LeanPool.Spawn(GameManager.StaticInstance.ObjectManager.LootItemPrefab, transform.position, transform.rotation).GetComponent<ItemInteractable>();
+            _spawnedItem = LeanPool.Spawn(GameManager.StaticInstance.ObjectManager.LootItemPrefab, transform.position, transform.rotation).GetComponent<InteractableItem>();
             _spawnedItem.Setup(Item, Amount);
         }
     }
