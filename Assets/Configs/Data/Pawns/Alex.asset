@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6de5fa57e570ff442a9c8492d546aad1, type: 3}
-  m_Name: Alex Killer
+  m_Name: Alex
   m_EditorClassIdentifier: 
-  _id: Alex Killer
+  _id: Alex
   _firstName: {fileID: 11400000, guid: 06f1abbab9e65084992ce297b9fbb5c5, type: 2}
   _lastName: {fileID: 11400000, guid: 334aa20c646dead48b27e5f0703b0727, type: 2}
-  _icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   _race: {fileID: 11400000, guid: 7da19ad69bd69fa44b7dd750b85100b6, type: 2}
   _gender: {fileID: 11400000, guid: a51559747f9a90a4abd9675afcfcbf8f, type: 2}
   _visual: {fileID: 11400000, guid: 41b9fae5c212c8b439c002186c05b44d, type: 2}

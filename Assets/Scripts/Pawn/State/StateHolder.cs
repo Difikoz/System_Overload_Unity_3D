@@ -12,12 +12,16 @@ namespace WinterUniverse
 
         public Dictionary<string, bool> States => _states;
 
-        public StateHolder(List<StateConfig> states)
+        public StateHolder(StateCreatorConfig config)
         {
             _states = new();
-            foreach (StateConfig state in states)
+            foreach (StateConfig state in GameManager.StaticInstance.ConfigsManager.States)
             {
                 SetStateValue(state.Key, false);
+            }
+            foreach (StateCreator state in config.States)
+            {
+                SetStateValue(state.Config.Key, state.Value);
             }
         }
 

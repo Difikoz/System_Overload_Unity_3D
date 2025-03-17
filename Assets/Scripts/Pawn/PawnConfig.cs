@@ -9,7 +9,6 @@ namespace WinterUniverse
         [SerializeField] private string _id;
         [SerializeField] private NameConfig _firstName;
         [SerializeField] private NameConfig _lastName;
-        [SerializeField] private Sprite _icon;
         [SerializeField] private RaceConfig _race;
         [SerializeField] private GenderConfig _gender;
         [SerializeField] private VisualConfig _visual;
@@ -22,7 +21,6 @@ namespace WinterUniverse
         public string ID => _id;
         public NameConfig FirstName => _firstName;
         public NameConfig LastName => _lastName;
-        public Sprite Icon => _icon;
         public RaceConfig Race => _race;
         public GenderConfig Gender => _gender;
         public VisualConfig Visual => _visual;
@@ -38,7 +36,6 @@ namespace WinterUniverse
             {
                 FirstName = _firstName.ID,
                 LastName = _lastName.ID,
-                Icon = _icon.GetInstanceID().ToString(),
                 Race = _race.ID,
                 Gender = _gender.ID,
                 Visual = _visual.ID,

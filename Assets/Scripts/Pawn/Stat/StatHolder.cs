@@ -31,10 +31,10 @@ namespace WinterUniverse
         public Stat ElectricalResistance => _electricalResistance;
         public Stat ChemicalResistance => _chemicalResistance;
 
-        public StatHolder(List<StatCreator> stats)
+        public StatHolder(StatCreatorConfig config)
         {
             _stats = new();
-            foreach (StatCreator stat in stats)
+            foreach (StatCreator stat in config.Stats)
             {
                 _stats.Add(new(stat.Config, stat.BaseValue));
             }

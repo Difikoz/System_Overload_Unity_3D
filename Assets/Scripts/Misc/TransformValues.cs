@@ -33,6 +33,11 @@ namespace WinterUniverse
             SetRotation(eulerAngles);
         }
 
+        public void SetTransform(Transform transform)
+        {
+            SetPositionAndRotation(transform.position, transform.eulerAngles);
+        }
+
         public Vector3 GetPosition()
         {
             return new(PosX, PosY, PosZ);

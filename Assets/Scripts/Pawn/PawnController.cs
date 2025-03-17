@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace WinterUniverse
 {
     public class PawnController : MonoBehaviour
     {
+        private bool _created;
         private PawnData _data;
         private EffectHolder _effectHolder;
         private FactionConfig _faction;
@@ -32,36 +34,44 @@ namespace WinterUniverse
 
         public void NewData(PawnData data)
         {
+            if (_created)
+            {
+                // delete created
+                _created = false;
+            }
             _data = data;
-            // assign first name
-            // assign last name
-            // assign icon
+            _firstName = GameManager.StaticInstance.ConfigsManager.GetName(data.FirstName);
+            _lastName = GameManager.StaticInstance.ConfigsManager.GetName(data.LastName);
+            _race = GameManager.StaticInstance.ConfigsManager.GetRace(data.Race);
+            _gender = GameManager.StaticInstance.ConfigsManager.GetGender(data.Gender);
+            _visual = GameManager.StaticInstance.ConfigsManager.GetVisual(data.Visual);
+            _voice = GameManager.StaticInstance.ConfigsManager.GetVoice(data.Voice);
+            _faction = GameManager.StaticInstance.ConfigsManager.GetFaction(data.Faction);
+            _statHolder = new(GameManager.StaticInstance.ConfigsManager.GetStatCreator(data.StatCreator));
+            _stateHolder = new(GameManager.StaticInstance.ConfigsManager.GetStateCreator(data.StateCreator));
+            _effectHolder = new(this);
+            _inventory = new(this);
+            foreach (KeyValuePair<string, int> stacks in data.ItemStacks)
+            {
+                _inventory.AddItem(GameManager.StaticInstance.ConfigsManager.GetItem(stacks.Key), stacks.Value);
+            }
             // spawn visual
-            //_visual=;
-            // assign race
-            //_race=;
-            // assign gender
-            //_gender = ;
-            // assign voice
-            //_voice=;
-            // change faction
-            // init stat holder
-            // init state holder
-            // set transform
-            // add items
+            transform.SetPositionAndRotation(data.Transform.GetPosition(), data.Transform.GetRotation());
+            _created = true;
         }
 
         public void SaveData(ref PawnData data)
         {
-            data.FirstName = _data.FirstName;
-            data.LastName = _data.LastName;
-            data.Icon = _data.Icon;
+            data.FirstName = _firstName.ID;
+            data.LastName = _lastName.ID;
             data.Race = _race.ID;
             data.Gender = _gender.ID;
             data.Visual = _visual.ID;
             data.Voice = _voice.ID;
             data.Faction = _faction.ID;
-            data.Transform.SetPositionAndRotation(transform.position, transform.eulerAngles);
+            data.StatCreator = _data.StatCreator;
+            data.StateCreator = _data.StateCreator;
+            data.Transform.SetTransform(transform);
             data.ItemStacks = new();
             foreach (ItemStack stack in _inventory.Stacks)
             {
@@ -81,13 +91,10 @@ namespace WinterUniverse
         public void LoadData(PawnData data)
         {
             NewData(data);
-            // set items ?
             // set weapon
             // set armor
-            // set transform
             // set health
             // set stamina
-            // set transform
         }
     }
 }

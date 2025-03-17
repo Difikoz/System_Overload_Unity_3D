@@ -5,7 +5,6 @@ namespace WinterUniverse
     {
         public string FirstName;
         public string LastName;
-        public string Icon;
         public string Race;
         public string Gender;
         public string Visual;
