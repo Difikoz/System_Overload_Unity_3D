@@ -37,11 +37,20 @@ namespace WinterUniverse
         public VisualConfig Visual => _visual;
         public VoiceConfig Voice => _voice;
 
+        public void OnUpdate(float deltaTime)
+        {
+            if (!_created)
+            {
+                return;
+            }
+            _effectHolder.OnUpdate(deltaTime);
+            _locomotion.OnUpdate(deltaTime);
+        }
+
         public void NewData(PawnData data)
         {
             if (_created)
             {
-                // delete created
                 if (_animator != null)
                 {
                     LeanPool.Despawn(_animator.gameObject);
@@ -59,7 +68,7 @@ namespace WinterUniverse
             _statHolder = new(GameManager.StaticInstance.ConfigsManager.GetStatCreator(data.StatCreator));
             _stateHolder = new(GameManager.StaticInstance.ConfigsManager.GetStateCreator(data.StateCreator));
             _effectHolder = new(this);
-            _inventory = new(this);
+            _inventory = new();
             foreach (KeyValuePair<string, int> stacks in data.ItemStacks)
             {
                 _inventory.AddItem(GameManager.StaticInstance.ConfigsManager.GetItem(stacks.Key), stacks.Value);

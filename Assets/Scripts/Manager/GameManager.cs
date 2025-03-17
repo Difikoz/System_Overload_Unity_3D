@@ -4,6 +4,7 @@ namespace WinterUniverse
 {
     public class GameManager : Singleton<GameManager>
     {
+        [SerializeField] private PawnConfig _testPlayerConfig;
         private AudioManager _audioManager;
         private CameraManager _cameraManager;
         private ConfigsManager _configsManager;
@@ -29,7 +30,21 @@ namespace WinterUniverse
         private void Start()
         {
             InitializeComponents();
+            EnableComponents();
         }
+
+        private void OnDestroy()
+        {
+            DisableComponents();
+        }
+
+        //private void OnEnable()
+        //{
+        //}
+
+        //private void OnDisable()
+        //{
+        //}
 
         private void Update()
         {
@@ -51,15 +66,29 @@ namespace WinterUniverse
         {
             _configsManager.InitializeComponent();
             _audioManager.InitializeComponent();
+            _controllersManager.InitializeComponent();
             _cameraManager.InitializeComponent();
-            //_controllersManager.InitializeComponent();
+            // load player data
+            _controllersManager.Player.Pawn.LoadData(_testPlayerConfig.GetData());
             //_uiManager.InitializeComponent();
+        }
+
+        private void EnableComponents()
+        {
+            _cameraManager.Enable();
+            _controllersManager.Enable();
+        }
+
+        private void DisableComponents()
+        {
+            _cameraManager.Disable();
+            _controllersManager.Disable();
         }
 
         private void UpdateComponents(float deltaTime)
         {
             _cameraManager.OnUpdate(deltaTime);
-            //_controllersManager.OnUpdate(deltaTime);
+            _controllersManager.OnUpdate(deltaTime);
         }
     }
 }

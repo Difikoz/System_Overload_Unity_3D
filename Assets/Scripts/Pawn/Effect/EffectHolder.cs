@@ -18,7 +18,7 @@ namespace WinterUniverse
             _allEffects = new();
         }
 
-        public void OnTick(float deltaTime)
+        public void OnUpdate(float deltaTime)
         {
             for (int i = _allEffects.Count - 1; i >= 0; i--)
             {

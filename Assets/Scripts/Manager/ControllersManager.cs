@@ -5,16 +5,25 @@ namespace WinterUniverse
 {
     public class ControllersManager : MonoBehaviour
     {
-        //private PlayerController _player;
+        private PlayerController _player;
         //private List<NPCController> _controllers = new();
 
-        //public PlayerController Player => _player;
+        public PlayerController Player => _player;
 
-        //public void InitializeComponent()
-        //{
-        //    _player = GameManager.StaticInstance.PrefabsManager.GetPlayer(transform);
-        //    _player.InitializeComponent();
-        //}
+        public void InitializeComponent()
+        {
+            _player = new();
+        }
+
+        public void Enable()
+        {
+            _player.Enable();
+        }
+
+        public void Disable()
+        {
+            _player.Disable();
+        }
 
         //public void ResetComponent()
         //{
@@ -24,14 +33,14 @@ namespace WinterUniverse
         //    }
         //}
 
-        //public void OnUpdate(float deltaTime)
-        //{
-        //    _player.OnTick(Time.deltaTime);
-        //    foreach (NPCController controller in _controllers)
-        //    {
-        //        controller.OnTick(deltaTime);
-        //    }
-        //}
+        public void OnUpdate(float deltaTime)
+        {
+            _player.OnUpdate(deltaTime);
+            //foreach (NPCController controller in _controllers)
+            //{
+            //    controller.OnTick(deltaTime);
+            //}
+        }
 
         //public void AddController(NPCController controller)
         //{

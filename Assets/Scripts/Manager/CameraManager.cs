@@ -13,7 +13,7 @@ namespace WinterUniverse
         [SerializeField] private float _collisionRadius = 0.25f;
         [SerializeField] private float _collisionAvoidanceSpeed = 10f;
 
-        private PawnController _player;
+        private PlayerController _player;
         private PlayerInputActions _inputActions;
         private Vector2 _lookInput;
         private float _xRot;
@@ -25,26 +25,31 @@ namespace WinterUniverse
         public void InitializeComponent()
         {
             _inputActions = new();
+            _player = GameManager.StaticInstance.ControllersManager.Player;
+        }
+
+        public void Enable()
+        {
             _inputActions.Enable();
             _xRot = _rotationRoot.localEulerAngles.x;
             _collisionDefaultOffset = _collisionRoot.localPosition.z;
         }
 
-        public void ResetComponent()
+        public void Disable()
         {
             _inputActions.Disable();
         }
 
         public void OnUpdate(float deltaTime)
         {
-            transform.position = Vector3.Lerp(transform.position, _player.Animator.transform.position, _followSpeed * deltaTime);
+            transform.position = Vector3.Lerp(transform.position, _player.Pawn.Animator.transform.position, _followSpeed * deltaTime);
             LookAround(deltaTime);
             HandleCollision(deltaTime);
         }
 
         private void LookAround(float deltaTime)
         {
-            //_lookInput = _inputActions.Camera.Look.ReadValue<Vector2>();
+            _lookInput = _inputActions.Camera.Look.ReadValue<Vector2>();
             if (_lookInput.x != 0f)
             {
                 transform.Rotate(Vector3.up * _lookInput.x * _rotateSpeed * deltaTime);

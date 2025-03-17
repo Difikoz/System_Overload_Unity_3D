@@ -7,14 +7,12 @@ namespace WinterUniverse
     {
         public Action OnInventoryChanged;
 
-        private PawnController _pawn;
         private List<ItemStack> _stacks;
 
         public List<ItemStack> Stacks => _stacks;
 
-        public Inventory(PawnController pawn)
+        public Inventory()
         {
-            _pawn = pawn;
             _stacks = new();
         }
 
