@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23041498c76d2864f8d8ec617f56b7a7, type: 3}
+  m_Name: Wanderer
+  m_EditorClassIdentifier: 
+  _id: Wanderer
+  _states:
+  - _config: {fileID: 11400000, guid: ca6298ccb490d8541891cec4c4151d57, type: 2}
+    _value: 1
+  - _config: {fileID: 11400000, guid: 0330173065b8ad84191823e63182ebee, type: 2}
+    _value: 0
+  - _config: {fileID: 11400000, guid: e6f8336190ee8144e8c9de659b2dcbc9, type: 2}
+    _value: 1
+  - _config: {fileID: 11400000, guid: 5f72b505fa1ba1d4180766b712f83ca5, type: 2}
+    _value: 0
+  - _config: {fileID: 11400000, guid: 7514c4ce00cc709438c7bbece2dc3edf, type: 2}
+    _value: 1
