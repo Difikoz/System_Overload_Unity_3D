@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ namespace WinterUniverse
 {
     public class StateHolder
     {
+        public Action OnStatesChanged;
+
         private Dictionary<string, bool> _states;
 
         public Dictionary<string, bool> States => _states;
@@ -43,6 +46,7 @@ namespace WinterUniverse
             {
                 _states.Add(key, value);
             }
+            OnStatesChanged?.Invoke();
         }
     }
 }

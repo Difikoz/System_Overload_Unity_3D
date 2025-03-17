@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de5fa57e570ff442a9c8492d546aad1, type: 3}
+  m_Name: Alex Killer
+  m_EditorClassIdentifier: 
+  _id: Alex Killer
+  _firstName: {fileID: 11400000, guid: 06f1abbab9e65084992ce297b9fbb5c5, type: 2}
+  _lastName: {fileID: 11400000, guid: 334aa20c646dead48b27e5f0703b0727, type: 2}
+  _icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  _race: {fileID: 11400000, guid: 7da19ad69bd69fa44b7dd750b85100b6, type: 2}
+  _gender: {fileID: 11400000, guid: a51559747f9a90a4abd9675afcfcbf8f, type: 2}
+  _visual: {fileID: 11400000, guid: 41b9fae5c212c8b439c002186c05b44d, type: 2}
+  _voice: {fileID: 11400000, guid: b2d4482b33767114a92986b3b18cfce8, type: 2}
+  _faction: {fileID: 11400000, guid: aa1b8f5bd3ec7aa44a9c7c78091dc04e, type: 2}
+  _statCreator: {fileID: 11400000, guid: e3e10f412264dfc409903457a012a997, type: 2}
+  _stateCreator: {fileID: 11400000, guid: 1ff243226cdf20e41bf2180321262106, type: 2}
+  _itemStacks:
+  - _item: {fileID: 11400000, guid: 7256ce753ef27a444a24eaca71489f1e, type: 2}
+    _amount: 1
+  - _item: {fileID: 11400000, guid: 11482a98613934b499ada2819b2031a8, type: 2}
+    _amount: 1
+  - _item: {fileID: 11400000, guid: 9b67a67c4dd90584883f6d3f89673e2a, type: 2}
+    _amount: 2
+  - _item: {fileID: 11400000, guid: 3ce49fb2f3ac61e469c58dad94348cc7, type: 2}
+    _amount: 2

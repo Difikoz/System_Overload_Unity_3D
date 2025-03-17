@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 
 namespace WinterUniverse
 {
     public class StatHolder
     {
+        public Action OnStatsChanged;
+
         private List<Stat> _stats;
         private Stat _healthMax;
         private Stat _staminaMax;
@@ -85,6 +88,7 @@ namespace WinterUniverse
             {
                 s.CalculateCurrentValue();
             }
+            OnStatsChanged?.Invoke();
         }
 
         public Stat GetStat(string name)
@@ -108,7 +112,7 @@ namespace WinterUniverse
             RecalculateStats();
         }
 
-        public void AddStatModifier(StatModifierCreator smc)
+        private void AddStatModifier(StatModifierCreator smc)
         {
             GetStat(smc.Config.ID).AddModifier(smc.Modifier);
         }
@@ -122,7 +126,7 @@ namespace WinterUniverse
             RecalculateStats();
         }
 
-        public void RemoveStatModifier(StatModifierCreator smc)
+        private void RemoveStatModifier(StatModifierCreator smc)
         {
             GetStat(smc.Config.ID).RemoveModifier(smc.Modifier);
         }
