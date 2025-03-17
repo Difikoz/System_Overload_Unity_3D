@@ -37,7 +37,7 @@ namespace WinterUniverse
 
         public void OnUpdate(float deltaTime)
         {
-            transform.position = Vector3.Lerp(transform.position, _player.transform.position, _followSpeed * deltaTime);
+            transform.position = Vector3.Lerp(transform.position, _player.Animator.transform.position, _followSpeed * deltaTime);
             LookAround(deltaTime);
             HandleCollision(deltaTime);
         }

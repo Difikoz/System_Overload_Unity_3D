@@ -1,12 +1,15 @@
+using Lean.Pool;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace WinterUniverse
 {
-    public class PawnController : MonoBehaviour
+    public class PawnController
     {
         private bool _created;
         private PawnData _data;
+        private PawnAnimator _animator;
+        private PawnLocomotion _locomotion;
         private EffectHolder _effectHolder;
         private FactionConfig _faction;
         private GenderConfig _gender;
@@ -20,6 +23,8 @@ namespace WinterUniverse
         private VoiceConfig _voice;
 
         public PawnData Data => _data;
+        public PawnAnimator Animator => _animator;
+        public PawnLocomotion Locomotion => _locomotion;
         public EffectHolder EffectHolder => _effectHolder;
         public FactionConfig Faction => _faction;
         public GenderConfig Gender => _gender;
@@ -37,6 +42,10 @@ namespace WinterUniverse
             if (_created)
             {
                 // delete created
+                if (_animator != null)
+                {
+                    LeanPool.Despawn(_animator.gameObject);
+                }
                 _created = false;
             }
             _data = data;
@@ -55,8 +64,10 @@ namespace WinterUniverse
             {
                 _inventory.AddItem(GameManager.StaticInstance.ConfigsManager.GetItem(stacks.Key), stacks.Value);
             }
-            // spawn visual
-            transform.SetPositionAndRotation(data.Transform.GetPosition(), data.Transform.GetRotation());
+            _locomotion = new(this);
+            _animator = LeanPool.Spawn(_visual.Model).GetComponent<PawnAnimator>();
+            _animator.transform.SetPositionAndRotation(data.Transform.GetPosition(), data.Transform.GetRotation());
+            _animator.Initialize(this);
             _created = true;
         }
 
@@ -71,7 +82,7 @@ namespace WinterUniverse
             data.Faction = _faction.ID;
             data.StatCreator = _data.StatCreator;
             data.StateCreator = _data.StateCreator;
-            data.Transform.SetTransform(transform);
+            data.Transform.SetTransform(_animator.transform);
             data.ItemStacks = new();
             foreach (ItemStack stack in _inventory.Stacks)
             {

@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c85aab9fc5a05e0459574414fb3aa0dd, type: 3}
+  m_Name: Human Female
+  m_EditorClassIdentifier: 
+  _id: Human Female
+  _model: {fileID: 4597340717775562368, guid: 2958035e7fea0e844a396a4aee0c35fe, type: 3}
+  _controller: {fileID: 22100000, guid: 3e4554721274a3e4193aa1603318bdbe, type: 2}
